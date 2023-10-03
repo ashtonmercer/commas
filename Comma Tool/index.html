@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comma Tool</title>
+
+    <link rel="icon" href="comma.png" type="image/png">
+
+    <style>
+        body {
+            font-family: monospace;
+            font-size: 16px;
+            margin: 0;
+            background-color: #181818;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            width: 50px;
+            height: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 0 20px;
+            text-align: center; /* Added this line to center the buttons */
+
+        }
+
+        button {
+            display: inline-flex; /* Changed from block to inline-flex */
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #282828;
+            color: #fff;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #444;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        pre {
+            background-color: #282828;
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+    </style>
+
+<script>
+        let removeDuplicates = false;
+   
+       function toggleRemoveDuplicates() {
+           const btn = document.getElementById('removeDuplicatesBtn');
+           removeDuplicates = !removeDuplicates;
+           btn.classList.toggle('active');
+           btn.textContent = removeDuplicates ? '😈 Removing Dupes 😈' : 'Remove Duplicates?';
+       }
+   
+       function toCommaSeparated() {
+           let data = document.getElementById('inputData').value.split('\n').map(item => item.trim()).filter(item => item !== '');
+           if(removeDuplicates) {
+               data = [...new Set(data)];
+           }
+           document.getElementById('outputData').textContent = data.join(', ').trim();
+       }
+   
+       function toColumn() {
+           let data = document.getElementById('inputData').value.split(',').map(item => item.trim()).filter(item => item !== '');
+           if(removeDuplicates) {
+               data = [...new Set(data)];
+           }
+           document.getElementById('outputData').textContent = data.join('\n').trim();
+       }
+   
+       function copyOutput() {
+           var outputData = document.getElementById('outputData').textContent; // changed innerText to textContent
+           var clipboardArea = document.getElementById('clipboardArea');
+           clipboardArea.value = outputData;
+           clipboardArea.select();
+           document.execCommand('copy');
+           alert('Copied the text: ' + outputData);
+       }
+   </script>
+   
+</head>
+
+<body>
+
+    <img src="comma.png" alt="Comma Icon">
+    <h1>Comma Tool</h1>
+
+    <div class="container">
+        <h2>Input Data</h2>
+        <textarea id="inputData" rows="10"></textarea><br>
+        <button onclick="toCommaSeparated()">Convert to Comma Separated</button>
+        <button onclick="toColumn()">Convert to Column</button>
+        <button id="removeDuplicatesBtn" onclick="toggleRemoveDuplicates()">Remove Duplicates?</button>
+
+        <h2>Converted Data</h2>
+        <button onclick="copyOutput()">Copy Output</button>
+        <pre id="outputData"></pre>
+
+        <textarea id="clipboardArea" style="position: absolute; left: -9999px;"></textarea>
+    </div>
+</body>
+
+</html>
